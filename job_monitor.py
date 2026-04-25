@@ -8,9 +8,8 @@ Sendet Benachrichtigungen via Telegram
 import requests
 import json
 import os
-import sqlite3
 from datetime import datetime
-from typing import List, Dict
+from typing import List, Dict, Set
 import time
 
 # Konfiguration
@@ -35,44 +34,32 @@ JOB_TYPE = "teilzeit"  # oder "part time"
 
 class JobMonitor:
     def __init__(self):
-        self.db_path = "/home/claude/job-monitor/jobs.db"
-        self.init_database()
+        self.seen_jobs_file = "seen_jobs.txt"
+        self.seen_jobs: Set[str] = self.load_seen_jobs()
         
-    def init_database(self):
-        """Initialisiert SQLite-Datenbank für bereits gesehene Jobs"""
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS seen_jobs (
-                job_id TEXT PRIMARY KEY,
-                title TEXT,
-                company TEXT,
-                url TEXT,
-                found_date TEXT
-            )
-        ''')
-        conn.commit()
-        conn.close()
+    def load_seen_jobs(self) -> Set[str]:
+        """Lädt bereits gesehene Job-IDs aus Textdatei"""
+        if os.path.exists(self.seen_jobs_file):
+            try:
+                with open(self.seen_jobs_file, 'r') as f:
+                    return set(line.strip() for line in f if line.strip())
+            except:
+                return set()
+        return set()
     
     def is_job_seen(self, job_id: str) -> bool:
         """Prüft, ob Job bereits gesehen wurde"""
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('SELECT job_id FROM seen_jobs WHERE job_id = ?', (job_id,))
-        result = cursor.fetchone()
-        conn.close()
-        return result is not None
+        return job_id in self.seen_jobs
     
     def mark_job_seen(self, job_id: str, title: str, company: str, url: str):
         """Markiert Job als gesehen"""
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('''
-            INSERT OR IGNORE INTO seen_jobs (job_id, title, company, url, found_date)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (job_id, title, company, url, datetime.now().isoformat()))
-        conn.commit()
-        conn.close()
+        if job_id not in self.seen_jobs:
+            self.seen_jobs.add(job_id)
+            try:
+                with open(self.seen_jobs_file, 'a') as f:
+                    f.write(f"{job_id}\n")
+            except Exception as e:
+                print(f"Fehler beim Speichern: {e}")
     
     def search_indeed(self) -> List[Dict]:
         """Durchsucht Indeed nach passenden Jobs"""
