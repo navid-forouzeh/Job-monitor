@@ -1,0 +1,35 @@
+name: Verify Pages deployment
+
+on:
+  push:
+    branches: [claude/victory-international-site-ytddfg]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Pages configuration
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "=== Pages API status ==="
+          gh api "repos/${{ github.repository }}/pages" 2>&1 || echo "PAGES_NOT_CONFIGURED"
+      - name: Probe live URL
+        run: |
+          URL="https://navid-forouzeh.github.io/Job-monitor/"
+          for i in $(seq 1 10); do
+            CODE=$(curl -s -o /tmp/body -w "%{http_code}" --max-time 20 "$URL" || echo "000")
+            SIZE=$(wc -c < /tmp/body)
+            echo "attempt=$i status=$CODE bytes=$SIZE"
+            if [ "$CODE" = "200" ]; then
+              echo "LIVE_OK"
+              grep -o "<title>[^<]*</title>" /tmp/body | head -1
+              exit 0
+            fi
+            sleep 20
+          done
+          echo "NOT_LIVE_YET"
