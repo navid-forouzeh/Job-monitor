@@ -1,0 +1,44 @@
+name: Wohnungs Monitor (Max)
+
+on:
+  schedule:
+    # Alle 2 Stunden von ca. 07:00 bis 21:00 Schweizer Zeit
+    - cron: '0 5-19/2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  search-wohnungen:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run Wohnungs Monitor
+      env:
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      run: |
+        python wohnungs_monitor.py
+
+    - name: Save seen listings (Duplikat-Erkennung)
+      run: |
+        if [ -f seen_wohnungen.txt ]; then
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add seen_wohnungen.txt
+          git diff --cached --quiet || git commit -m "Update seen_wohnungen.txt [skip ci]"
+          git push
+        fi
