@@ -216,7 +216,23 @@ def write_overview(sheet, rows):
         cell = sheet.cell(row=total, column=column, value=f"=SUM({letter}5:{letter}{total - 1})")
         cell.font = Font(name=ARIAL, size=10, bold=True)
 
+    # Kontrollwerte: dieselben Zahlen, die die Formeln oben liefern müssen.
+    # Sie stehen hier im Klartext, weil die Formeln erst beim Öffnen in Excel
+    # gerechnet werden — so sind die Zahlen auch in einer Vorschau sichtbar.
+    control = []
+    for sport, _ in sports:
+        rows_of_sport = [r for r in rows if r["sport"] == sport]
+        control.append(
+            f"{sport}: {len(rows_of_sport)} Einträge, "
+            f"{sum(1 for r in rows_of_sport if r['tel'])} mit Telefon, "
+            f"{sum(1 for r in rows_of_sport if r['mail'])} mit E-Mail, "
+            f"{sum(1 for r in rows_of_sport if STATUS.get(r['status'], ('', ''))[0].startswith('Link ok'))} Websites ok"
+        )
+
     notes = [
+        "",
+        f"Kontrollwerte Stand {STAND} (die Formeln oben müssen dasselbe ergeben)",
+        *control,
         "",
         "Spalte «Link geprüft»",
         "Link ok – Website wurde am " + STAND + " angesteuert und hat geantwortet (HTTP 200/301).",
@@ -235,7 +251,10 @@ def write_overview(sheet, rows):
     for offset, text in enumerate(notes):
         line = total + 2 + offset
         cell = sheet.cell(row=line, column=1, value=text)
-        bold = text in ("Spalte «Link geprüft»", "Was diese Liste NICHT ist")
+        bold = text.startswith("Kontrollwerte Stand") or text in (
+            "Spalte «Link geprüft»",
+            "Was diese Liste NICHT ist",
+        )
         cell.font = Font(name=ARIAL, size=10, bold=bold)
 
 
