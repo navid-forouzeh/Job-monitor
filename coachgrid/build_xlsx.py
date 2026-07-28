@@ -180,25 +180,32 @@ def write_overview(sheet, rows):
         cell.font = Font(name=ARIAL, size=10, bold=True, color="FFFFFF")
         cell.fill = HEAD_FILL
 
+    # Bezüge auf die tatsächlichen Datenzeilen begrenzen — Ganzspalten-Bezüge
+    # machen die Neuberechnung unnötig langsam.
+    last = len(rows) + 1
+
+    def ref(column):
+        return f"'Alle Vereine'!${column}$2:${column}${last}"
+
     sports = [(sport, prio) for _, sport, prio in SOURCES]
     for offset, (sport, prio) in enumerate(sports):
         line = 5 + offset
         sheet.cell(row=line, column=1, value=sport).font = BODY
-        sheet.cell(row=line, column=2, value=f"=COUNTIF('Alle Vereine'!$A:$A,$A{line})").font = BODY
+        sheet.cell(row=line, column=2, value=f"=COUNTIF({ref('A')},$A{line})").font = BODY
         sheet.cell(
             row=line,
             column=3,
-            value=f'=COUNTIFS(\'Alle Vereine\'!$A:$A,$A{line},\'Alle Vereine\'!$C:$C,"<>")',
+            value=f'=COUNTIFS({ref("A")},$A{line},{ref("C")},"<>")',
         ).font = BODY
         sheet.cell(
             row=line,
             column=4,
-            value=f'=COUNTIFS(\'Alle Vereine\'!$A:$A,$A{line},\'Alle Vereine\'!$D:$D,"<>")',
+            value=f'=COUNTIFS({ref("A")},$A{line},{ref("D")},"<>")',
         ).font = BODY
         sheet.cell(
             row=line,
             column=5,
-            value=f'=COUNTIFS(\'Alle Vereine\'!$A:$A,$A{line},\'Alle Vereine\'!$F:$F,"Link ok*")',
+            value=f'=COUNTIFS({ref("A")},$A{line},{ref("F")},"Link ok*")',
         ).font = BODY
         sheet.cell(row=line, column=6, value=prio).font = BODY
 
