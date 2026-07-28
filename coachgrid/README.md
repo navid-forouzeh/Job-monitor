@@ -1,11 +1,31 @@
 # Coach Grid — Vereine finden
 
-Zwei Dinge liegen hier:
-
 | Datei | Was |
 |---|---|
+| **[`data/`](data/)** | **414 Schweizer Vereine und Anlagen mit Telefon, Mail, Adresse und Angebot** — Golf 103, Tennis 99, Schwimmen 180, Reiten & Eishockey 32 |
+| `vereine.html` | Dieselbe Liste als durchsuchbare Seite (Telefon anrufbar, Mail anklickbar, Kartenlink pro Eintrag) |
+| [`quellen.md`](quellen.md) | Jede Zahl mit ihrer Quelle, jeder Link mit Prüfstatus vom 28.07.2026 |
 | [`marktanalyse-vereine.md`](marktanalyse-vereine.md) | Wie viele Leute suchen einen Verein, wie viele Mitglieder ein Verein zum Rendieren braucht, welche Vereinstypen zahlen können |
-| `club_finder.py` | Script, das Schweizer Vereine (Tennis, Golf, Schwimmen, Reiten, …) samt Kontaktdaten als CSV/JSON zieht |
+| `club_finder.py` | Script, das weitere Sportarten aus OpenStreetMap nachzieht |
+| `build_page.py` | Baut `vereine.html` aus den CSVs neu |
+
+## Die Liste
+
+```bash
+python3 coachgrid/build_page.py   # CSVs -> coachgrid/vereine.html
+```
+
+Die CSVs sind semikolongetrennt (Excel-tauglich) mit den Spalten
+`name; telefon; email; website; link_status; plz; ort; strasse; angebot; koordinaten`.
+
+`link_status` ist der HTTP-Code vom Link-Check am 28.07.2026:
+`200`/`301` = erreichbar, `403`/`406`/`429`/`000` = Server blockt die automatische
+Prüfung oder antwortet zu langsam (im Browser meist normal erreichbar),
+`404`/`500` = Link tot, `-` = keine Website hinterlegt.
+Von 277 geprüften Websites antworteten 248 sauber.
+
+Zwei Mehrsport-Anlagen (Centre Sportif de la Vigne Blanche, Sportzentrum Prau la Selva)
+stehen bewusst in zwei Dateien, weil sie beide Sportarten anbieten.
 
 ## Schnellstart
 
