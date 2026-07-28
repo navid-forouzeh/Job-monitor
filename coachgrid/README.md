@@ -22,7 +22,8 @@ Die CSVs sind semikolongetrennt (Excel-tauglich) mit den Spalten
 `200`/`301` = erreichbar, `403`/`406`/`429`/`000` = Server blockt die automatische
 Prüfung oder antwortet zu langsam (im Browser meist normal erreichbar),
 `404`/`500` = Link tot, `-` = keine Website hinterlegt.
-Von 277 geprüften Websites antworteten 248 sauber.
+Jede hinterlegte Website wurde angesteuert (rund 400 Checks über alle Sportarten);
+im Durchgang Golf + Schwimmen antworteten 248 von 277 Adressen sauber.
 
 Zwei Mehrsport-Anlagen (Centre Sportif de la Vigne Blanche, Sportzentrum Prau la Selva)
 stehen bewusst in zwei Dateien, weil sie beide Sportarten anbieten.
