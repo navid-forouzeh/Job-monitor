@@ -2,6 +2,7 @@
 
 | Datei | Was |
 |---|---|
+| `Coach_Grid_Vereinsmodell.xlsx` | **Entscheidungsmodell «Vereine als B2B-Kunden»** — Staffelpreise, Szenarien über 3 Jahre, Sensitivität, Zielkonflikt Coach/Verein, 90-Tage-Fahrplan. Gebaut mit `build_vereinsmodell.py` |
 | **[`data/`](data/)** | **414 Schweizer Vereine und Anlagen mit Telefon, Mail, Adresse und Angebot** — Golf 103, Tennis 99, Schwimmen 180, Reiten & Eishockey 32 |
 | `vereine.html` | Dieselbe Liste als durchsuchbare Seite (Telefon anrufbar, Mail anklickbar, Kartenlink pro Eintrag) |
 | [`quellen.md`](quellen.md) | Jede Zahl mit ihrer Quelle, jeder Link mit Prüfstatus vom 28.07.2026 |
