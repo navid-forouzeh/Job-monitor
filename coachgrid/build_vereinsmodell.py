@@ -4,7 +4,7 @@ Baut die Excel-Datei «Vereine als Kunden» für Coach Grid.
 
     python3 coachgrid/build_vereinsmodell.py -> coachgrid/Coach_Grid_Vereinsmodell.xlsx
 
-Aufbau: sieben Blätter, pro Blatt eine Tabelle und darunter ein Fazit.
+Aufbau: acht Blätter, pro Blatt eine Tabelle und darunter ein Fazit.
 Blau hinterlegte Zellen sind Eingaben, alles andere rechnet sich daraus.
 """
 
@@ -148,7 +148,7 @@ def blatt_uebersicht(book):
          "bei einem Zehntel des Aufwands für Verkauf und Betreuung (Blatt 3)."),
         ("Die Anfrage bleibt beim Coach",
          "Der Verein zahlt für Sichtbarkeit und erhält jede Anfrage in Kopie. Die Anfrage selbst geht an "
-         "den Coach. So bleibt die Plattform eine Coach-Plattform (Blatt 5)."),
+         "den Coach. So bleibt die Plattform eine Coach-Plattform (Blatt 6)."),
     ]
     for offset, (claim, why) in enumerate(points):
         line = 15 + offset
@@ -159,7 +159,7 @@ def blatt_uebersicht(book):
     fazit(s, 19, 5,
           "Das Modell trägt — aber nur mit gestaffelten Preisen und mit Fokus auf grosse Vereine. "
           "Im realistischen Fall sind rund CHF 450'000 über drei Jahre erreichbar. Nächster Schritt: "
-          "50 Vereine aus der bestehenden Liste anschreiben und drei Pilotkunden gewinnen (Blatt 6).")
+          "50 Vereine aus der bestehenden Liste anschreiben und drei Pilotkunden gewinnen (Blatt 7).")
     return s
 
 
@@ -309,31 +309,37 @@ def blatt_umsatz(book):
 def blatt_markt(book):
     s = setup(book, "4 Markt", "Markt",
               "Grundlage ist die eigene Kontaktliste vom 28.07.2026 mit 414 Vereinen.",
-              (26, 18, 18, 18, 22, 30))
+              (26, 16, 18, 30, 10, 20, 36))
 
-    header(s, 4, ["Sportart", "In unserer Liste", "Clubs in der Schweiz",
+    header(s, 4, ["Sportart", "In unserer Liste", "Clubs in der Schweiz", "Saison",
                   "Stufe", "Umsatz bei 100 %", "Warum in dieser Reihenfolge"])
     market = [
-        ("Golf", 103, 100, "S", "='2 Preise'!C8", "Höchste Zahlungskraft: eigener Platz, Geschäftsführung, Marketingbudget."),
-        ("Tennis", 99, 900, "M", "='2 Preise'!C9", "Grösste Zahl an Clubs mit eigener Anlage und eigenen Trainern."),
-        ("Schwimmen", 180, 175, "M", "='2 Preise'!C9", "Laufendes Kursgeschäft; dort wird ohnehin nach Angeboten gesucht."),
-        ("Reiten und Eishockey", 32, 450, "M", "='2 Preise'!C9", "Grosser Nachwuchsstab, Reitbetriebe entscheiden schnell."),
+        ("Golf", 103, 100, "April bis Oktober", "S", "='2 Preise'!C8",
+         "Höchste Zahlungskraft: eigener Platz, Geschäftsführung, Marketingbudget. Im Winter ruht der Betrieb."),
+        ("Tennis", 99, 900, "Aussenplätze April bis Oktober, Halle ganzjährig", "M", "='2 Preise'!C9",
+         "Grösste Zahl an Clubs mit eigener Anlage und eigenen Trainern."),
+        ("Schwimmen", 180, 175, "ganzjährig (Hallenbad)", "M", "='2 Preise'!C9",
+         "Laufendes Kursgeschäft ohne Saisonlücke; dort wird ohnehin nach Angeboten gesucht."),
+        ("Reiten und Eishockey", 32, 450, "Eishockey September bis April, Reiten ganzjährig", "M", "='2 Preise'!C9",
+         "Eishockey füllt genau die Monate, in denen Golf stillsteht."),
     ]
-    for offset, (sport, ours, total, tier, price, why) in enumerate(market):
+    for offset, (sport, ours, total, season, tier, price, why) in enumerate(market):
         line = 5 + offset
         cell(s, line, 1, sport, font=F_BOLD)
         cell(s, line, 2, ours, fmt=NUM, align=CENTER)
         cell(s, line, 3, total, fmt=NUM, align=CENTER)
-        cell(s, line, 4, tier, align=CENTER)
-        cell(s, line, 5, f"=B{line}*{price[1:]}", fmt=CHF, align=CENTER, font=F_BOLD)
-        cell(s, line, 6, why, align=WRAP, height=40)
+        cell(s, line, 4, season, align=WRAP)
+        cell(s, line, 5, tier, align=CENTER)
+        cell(s, line, 6, f"=B{line}*{price[1:]}", fmt=CHF, align=CENTER, font=F_BOLD)
+        cell(s, line, 7, why, align=WRAP, height=46)
 
     cell(s, 9, 1, "Total", font=F_BOLD)
     cell(s, 9, 2, "=SUM(B5:B8)", fmt=NUM, font=F_BOLD, align=CENTER)
     cell(s, 9, 3, "=SUM(C5:C8)", fmt=NUM, font=F_BOLD, align=CENTER)
     cell(s, 9, 4, "")
-    cell(s, 9, 5, "=SUM(E5:E8)", fmt=CHF, font=F_BOLD, fill=FILL_GOOD, align=CENTER)
-    cell(s, 9, 6, "Obergrenze, wenn jeder Verein der Liste zahlt. Keine Planzahl.", align=WRAP)
+    cell(s, 9, 5, "")
+    cell(s, 9, 6, "=SUM(F5:F8)", fmt=CHF, font=F_BOLD, fill=FILL_GOOD, align=CENTER)
+    cell(s, 9, 7, "Obergrenze, wenn jeder Verein der Liste zahlt. Keine Planzahl.", align=WRAP)
 
     chart = BarChart()
     chart.type = "col"
@@ -343,16 +349,131 @@ def blatt_markt(book):
     chart.set_categories(Reference(s, min_col=1, min_row=5, max_row=8))
     s.add_chart(chart, "A13")
 
-    fazit(s, 11, 6,
-          "414 Vereine sind mit Name, Telefon und Mailadresse direkt ansprechbar. Golf und die grossen "
-          "Tennisclubs zuerst: dort sind Budget, feste Ansprechpartner und eigene Trainer vorhanden. "
-          "Schwimmvereine folgen, weil dort das Kursgeschäft läuft.")
+    fazit(s, 11, 7,
+          "414 Vereine sind mit Name, Telefon und Mailadresse direkt ansprechbar. Golf zuerst, weil dort "
+          "Budget und feste Ansprechpartner vorhanden sind — aber Golf steht von November bis März still. "
+          "Eishockey läuft genau dann. Wer beide Sportarten im Kundenstamm hat, hat ganzjährig Anfragen "
+          "statt einer toten Wintersaison. Risiken und Gegenmassnahmen auf Blatt 5.")
     return s
 
 
 # ------------------------------------------------------------------ Blatt 5
+def blatt_risiken(book):
+    s = setup(book, "5 Risiken", "Was schiefgehen kann",
+              "Zehn Probleme, die im Vereinsgeschäft auftreten — und was dagegen hilft.",
+              (30, 38, 62, 20))
+
+    header(s, 4, ["Problem", "Warum es weh tut", "Was man dagegen tun kann", "Wann es akut wird"])
+    risks = [
+        ("Golf ist ein Saisongeschäft",
+         "Die Plätze sind etwa von April bis Oktober offen, in den Bergen kürzer. Von November bis März "
+         "kommen kaum Anfragen — der Club sieht keinen Gegenwert und stellt das Abo infrage.",
+         "1. Jahresvertrag statt Monatsabo: der Nutzen wird über die Saison gemessen, nicht über den Monat.\n"
+         "2. Eishockey als Gegengewicht aufnehmen — dessen Saison läuft September bis April.\n"
+         "3. Die Wintermonate im Vertrag als Vorbereitungszeit ausweisen: Profile, Fotos, Kursangebote für die neue Saison.\n"
+         "4. Reporting pro Saison statt pro Monat verschicken.\n"
+         "5. Im Winter verkaufen, im Frühling starten — dann fallen Budgetbeschluss und Saisonstart zusammen.",
+         "ab dem ersten Winter"),
+        ("Vereine entscheiden langsam",
+         "Der Vorstand arbeitet ehrenamtlich und tagt oft nur quartalsweise. Grössere Ausgaben brauchen die "
+         "Generalversammlung. Aus einem Gespräch werden schnell sechs Monate bis zur Unterschrift.",
+         "1. Direkt beim Geschäftsführer oder Sekretariat ansetzen statt beim Gesamtvorstand.\n"
+         "2. Den Preis so wählen, dass er unter der Genehmigungsschwelle des Vorstands liegt.\n"
+         "3. Eine kostenlose Testphase bis zur nächsten Generalversammlung anbieten.\n"
+         "4. Vertragsbeginn auf den Start des Vereinsjahrs legen.\n"
+         "5. Den Verkauf ins Budgetfenster im Herbst legen, nicht ins Frühjahr.",
+         "sofort, im ersten Gespräch"),
+        ("Den meisten Vereinen fehlt schlicht das Geld",
+         "82 Prozent der Schweizer Sportvereine haben keine bezahlte Person, die durchschnittlichen "
+         "Jahreseinnahmen liegen bei CHF 69'000. Ein Abo über CHF 10'000 wäre dort ein Siebtel des Budgets.",
+         "1. Nur Vereine mit eigener Anlage ansprechen — dort gibt es Fixkosten und damit eine Buchhaltung.\n"
+         "2. Kleinere Vereine gar nicht als Verein verkaufen, sondern deren Coaches einzeln zu CHF 399.\n"
+         "3. Zahlung aus dem Sponsoring- oder Marketingtopf statt aus der Vereinskasse vorschlagen.\n"
+         "4. Abrechnung pro Coach statt Pauschale, damit der Betrag mitwächst.\n"
+         "5. Rahmenvertrag über einen Verband prüfen statt Einzelverträge.",
+         "bei jedem zweiten Kontakt"),
+        ("Coaches fühlen sich übergangen",
+         "Wenn der Verein den Zugang bezahlt, entsteht schnell der Eindruck, das Profil gehöre dem Verein. "
+         "Genau die Coaches, wegen denen die Plattform existiert, verlieren dann das Interesse.",
+         "1. Die Anfrage geht an den Coach, der Verein bekommt sie in Kopie (Blatt 6).\n"
+         "2. Das Profil bleibt beim Coach, auch wenn er den Verein verlässt.\n"
+         "3. Bewertungen und Referenzen gehören dem Coach, nicht dem Vereinskonto.\n"
+         "4. Coaches vor der Unterschrift des Vereins informieren, nicht danach.\n"
+         "5. Den Vereinsnamen als Zusatz im Profil führen, nicht als Absender.",
+         "sobald der erste Verein aktiv ist"),
+        ("Der Coach arbeitet privat weiter",
+         "Der Verein zahlt, die Anfragen laufen aber an ihm vorbei in private Stunden. Dann bezahlt der "
+         "Verein die Sichtbarkeit für ein Geschäft, an dem er nichts verdient.",
+         "1. Preisuntergrenze im Vertrag: Privatstunden eines Vereinscoaches liegen mindestens auf Vereinsniveau.\n"
+         "2. Ein zweites, privates Profil nur mit schriftlicher Freigabe des Vereins.\n"
+         "3. Der Zugangscode erlischt beim Vereinsaustritt.\n"
+         "4. Das Dashboard zeigt dem Verein alle Anfragen an seine Coaches.\n"
+         "5. Verstoss führt zum Entzug des Zugangs, nicht zu einer Diskussion.",
+         "nach den ersten Monaten"),
+        ("Zu wenig Rücklauf, keine Verlängerung",
+         "Wir können keine neuen Mitglieder garantieren. Bleiben die Anfragen aus, verlängert der Verein "
+         "nach einem Jahr nicht — und erzählt es den Nachbarvereinen.",
+         "1. Erfolgskriterien vor der Unterschrift schriftlich festhalten.\n"
+         "2. Monatliches Reporting ab dem ersten Tag, auch wenn die Zahlen klein sind.\n"
+         "3. Erstes Jahr zum halben Preis gegen das Recht, den Verein als Referenz zu nennen.\n"
+         "4. Ausstiegsmöglichkeit nach zwölf Monaten statt Streit um die Restlaufzeit.\n"
+         "5. Bei schwachen Zahlen nachbessern (mehr Sichtbarkeit) statt Geld zurückzahlen.",
+         "nach zwölf Monaten"),
+        ("Wenige Kunden tragen den ganzen Umsatz",
+         "Zwanzig grosse Vereine bringen den Umsatz von zweihundert kleinen — kündigen drei davon, "
+         "bricht ein Sechstel des Geschäfts weg.",
+         "1. Kein Verein darf mehr als 15 Prozent des Vereinsumsatzes ausmachen.\n"
+         "2. Das Einzelcoach-Geschäft bewusst weiterführen, nicht ersetzen.\n"
+         "3. Vertragsenden über das Jahr verteilen statt alle per 31. Dezember.\n"
+         "4. Nutzung des Dashboards als Frühwarnsignal beobachten.\n"
+         "5. Mindestens zwei Sportarten im Kundenstamm halten.",
+         "ab dem zehnten Kunden"),
+        ("Onboarding von 40 Coaches kostet Zeit",
+         "Ein Grossverein bedeutet vierzig Profile mit Foto, Text und Qualifikationen. Ohne Prozess "
+         "verbrennt das mehr Zeit, als das Abo einbringt.",
+         "1. Selbstregistrierung der Coaches über einen Vereinscode.\n"
+         "2. Einmalige Einrichtungsgebühr, die den Aufwand deckt.\n"
+         "3. Ein Ansprechpartner im Verein, der die Coaches sammelt und nachfasst.\n"
+         "4. Profile per Liste importieren statt einzeln erfassen.\n"
+         "5. Den Zeitaufwand im Pilot messen und in den Preis der nächsten Stufe einrechnen.",
+         "beim ersten Grossverein"),
+        ("Der Verband baut es selbst",
+         "Swiss Tennis, Swiss Golf oder Swiss Aquatics haben die Vereine bereits als Mitglieder. Bauen sie "
+         "ein eigenes Verzeichnis, verlieren wir den Zugang zu genau dieser Gruppe.",
+         "1. Den Verband als Partner ansprechen, bevor er es selbst versucht.\n"
+         "2. Auf Buchung und Lektion setzen — eine reine Auflistung kann jeder Verband selbst.\n"
+         "3. Die ersten Clubs mit einer Exklusivität in ihrer Region binden.\n"
+         "4. Schnell sein: ein Verbandsprojekt braucht Jahre, wir brauchen Monate.\n"
+         "5. Die Marke bei den Coaches aufbauen — die bleiben, auch wenn der Verein wechselt.",
+         "im zweiten Jahr"),
+        ("Kaltakquise per Mail",
+         "Wir schreiben Vereine an, die uns nicht kennen. Ohne Sorgfalt landet das im Spam und schadet "
+         "der Absenderadresse für alle künftigen Mails.",
+         "1. Nur allgemeine Vereinsadressen verwenden, keine privaten Adressen von Vorstandsmitgliedern.\n"
+         "2. Abmeldemöglichkeit in jeder Mail, Absender und Kontakt klar erkennbar.\n"
+         "3. Nach einem Widerspruch die Adresse dauerhaft aus der Liste nehmen.\n"
+         "4. Höchstens zweimal schreiben, danach telefonisch nachfassen.\n"
+         "5. In Wellen von 50 Adressen versenden statt 414 auf einmal.",
+         "ab der ersten Welle"),
+    ]
+    for offset, (problem, hurt, options, when) in enumerate(risks):
+        line = 5 + offset
+        cell(s, line, 1, problem, font=F_BOLD, align=WRAP)
+        cell(s, line, 2, hurt, align=WRAP)
+        cell(s, line, 3, options, align=Alignment(wrap_text=True, vertical="top"))
+        cell(s, line, 4, when, align=WRAP, height=104)
+
+    fazit(s, 16, 4,
+          "Kein Problem auf dieser Liste kippt das Modell — aber vier davon treffen schon im ersten Jahr: "
+          "die Winterlücke bei Golf, die langsamen Vereinsentscheide, das fehlende Budget bei kleinen "
+          "Vereinen und die Sorge der Coaches. Alle vier lassen sich mit Vertragsgestaltung und der Wahl "
+          "der Zielgruppe entschärfen, nicht mit Entwicklung. Genau das ist im Fahrplan auf Blatt 7 abgebildet.")
+    return s
+
+
+# ------------------------------------------------------------------ Blatt 6
 def blatt_konflikt(book):
-    s = setup(book, "5 Coach oder Verein", "Coach oder Verein",
+    s = setup(book, "6 Coach oder Verein", "Coach oder Verein",
               "Der Verein zahlt nur, wenn er den Nutzen sieht. Die Plattform lebt davon, dass es um den Coach geht.",
               (26, 34, 34, 26))
 
@@ -418,7 +539,7 @@ def blatt_konflikt(book):
 
 # ------------------------------------------------------------------ Blatt 6
 def blatt_fahrplan(book):
-    s = setup(book, "6 Fahrplan", "Fahrplan über 90 Tage",
+    s = setup(book, "7 Fahrplan", "Fahrplan über 90 Tage",
               "Nach drei Monaten steht die Entscheidung — auf Basis gemessener Zahlen.",
               (16, 30, 46, 22, 26))
 
@@ -435,7 +556,7 @@ def blatt_fahrplan(book):
          "50 Vereine anschreiben, nach vier Tagen telefonisch nachfassen.",
          "Navid", "50 angeschrieben und nachgefasst"),
         ("Woche 5–8", "Gespräche führen",
-         "Termine wahrnehmen, Blatt 2 und 5 als Gesprächsgrundlage nutzen.",
+         "Termine wahrnehmen, Blatt 2 und 6 als Gesprächsgrundlage nutzen.",
          "Robert", "mindestens acht Termine"),
         ("Woche 6–10", "Drei Pilotkunden gewinnen",
          "Erstes Jahr zum halben Preis gegen das Recht, den Verein als Referenz zu nennen.",
@@ -473,7 +594,7 @@ def blatt_fahrplan(book):
 
 # ------------------------------------------------------------------ Blatt 7
 def blatt_zahlen(book):
-    s = setup(book, "7 Zahlen und Quellen", "Zahlen und Quellen",
+    s = setup(book, "8 Zahlen und Quellen", "Zahlen und Quellen",
               "Getrennt nach belegten Zahlen und Eingaben, die im Pilot gemessen werden.",
               (44, 26, 20, 44))
 
@@ -493,19 +614,23 @@ def blatt_zahlen(book):
         ("Fussballvereine in der Schweiz", "1'345", "belegt", "Schweizerischer Fussballverband"),
         ("Erwachsene in einem Sportverein", "22 %", "belegt", "Sport Schweiz 2020, BASPO"),
         ("Kinder von 10 bis 14 in einem Sportverein", "67 %", "belegt", "Sport Schweiz 2020, BASPO"),
+        ("Saison National League Eishockey", "September bis April", "belegt",
+         "Spielplan National League: Qualifikation September bis März, Playoffs bis April"),
+        ("Saison Golfplätze Schweiz", "April bis Oktober", "belegt",
+         "Saisonzeiten der Golfplätze, Graubünden Ferien. Je nach Höhenlage kürzer"),
         ("Kontaktierbare Vereine in unserer Liste", "414", "eigene Erhebung",
          "Eigene Liste vom 28.07.2026: Golf 103, Tennis 99, Schwimmen 180, Reiten und Eishockey 32"),
     ]
     for offset, row in enumerate(facts):
         line = 6 + offset
         for column, value in enumerate(row, start=1):
-            fill = FILL_GOOD if column == 3 else None
             cell(s, line, column, value, align=WRAP,
+                 fill=FILL_GOOD if column == 3 else None,
                  font=F_BOLD if column == 2 else F_BODY, height=24)
 
-    s["A19"] = "Eingaben, die im Pilot gemessen werden"
-    s["A19"].font = F_H2
-    header(s, 20, ["Eingabe", "Im Modell", "Art", "Wird gemessen durch"])
+    start = 6 + len(facts) + 1          # Leerzeile nach den belegten Zahlen
+    s.cell(row=start, column=1, value="Eingaben, die im Pilot gemessen werden").font = F_H2
+    header(s, start + 1, ["Eingabe", "Im Modell", "Art", "Wird gemessen durch"])
     assumptions = [
         ("Preis pro Coach und Jahr", "CHF 399", "Eingabe", "Bereits im Einsatz, auf Blatt 2 änderbar"),
         ("Antwortquote auf ein Anschreiben", "12 / 20 / 30 %", "Eingabe", "Erste Welle an 50 Vereine, Woche 3–4"),
@@ -514,14 +639,14 @@ def blatt_zahlen(book):
         ("Coaches pro Verein", "10 bis 40", "Eingabe", "Wird im Erstgespräch erfasst"),
     ]
     for offset, row in enumerate(assumptions):
-        line = 21 + offset
+        line = start + 2 + offset
         for column, value in enumerate(row, start=1):
-            fill = FILL_WARN if column == 3 else None
             cell(s, line, column, value, align=WRAP,
-                 font=F_BOLD if column == 2 else F_BODY, fill=fill, height=24)
+                 fill=FILL_WARN if column == 3 else None,
+                 font=F_BOLD if column == 2 else F_BODY, height=24)
 
-    s["A27"] = "Quellen"
-    s["A27"].font = F_H2
+    quellen = start + 2 + len(assumptions) + 1
+    s.cell(row=quellen, column=1, value="Quellen").font = F_H2
     links = [
         ("Vereinsstudie 2022, Swiss Olympic",
          "https://www.swissolympic.ch/dam/jcr:e13bfb8d-92a6-41a3-89e4-b80d30c2d23c/Vereinsstudie%202022_DE_Web.pdf"),
@@ -533,20 +658,22 @@ def blatt_zahlen(book):
          "https://www.swiss-aquatics.ch/verband/mitglieder/alle-mitgliedvereine/"),
         ("Swiss Tennis", "https://www.swisstennis.ch/de/"),
         ("Swiss Golf", "https://www.swissgolf.ch/"),
+        ("Saisonzeiten Golfplätze, Graubünden Ferien",
+         "https://www.graubuenden.ch/de/news/saisonzeiten-golfplaetze"),
+        ("Spielplan National League", "https://www.sihf.ch/"),
     ]
     for offset, (label, url) in enumerate(links):
-        line = 28 + offset
-        c = s.cell(row=line, column=1, value=label)
-        c.font = F_BODY
+        line = quellen + 1 + offset
+        s.cell(row=line, column=1, value=label).font = F_BODY
         link = s.cell(row=line, column=2, value=url)
         link.font = F_LINK
         link.hyperlink = url
         s.merge_cells(start_row=line, start_column=2, end_row=line, end_column=4)
 
-    fazit(s, 35, 4,
-          "Elf Marktzahlen sind belegt und verlinkt, eine stammt aus der eigenen Erhebung. Fünf Werte sind "
-          "Eingaben — sie treiben das Ergebnis und werden im 90-Tage-Pilot durch gemessene Zahlen ersetzt. "
-          "Bis dahin ist jedes Umsatzszenario eine Rechnung, keine Prognose.")
+    fazit(s, quellen + len(links) + 2, 4,
+          "Dreizehn Marktzahlen sind belegt und verlinkt, eine stammt aus der eigenen Erhebung. Fünf Werte "
+          "sind Eingaben — sie treiben das Ergebnis und werden im 90-Tage-Pilot durch gemessene Zahlen "
+          "ersetzt. Bis dahin ist jedes Umsatzszenario eine Rechnung, keine Prognose.")
     return s
 
 
@@ -558,6 +685,7 @@ def main():
     blatt_preise(book)
     blatt_umsatz(book)
     blatt_markt(book)
+    blatt_risiken(book)
     blatt_konflikt(book)
     blatt_fahrplan(book)
     blatt_zahlen(book)
