@@ -112,12 +112,13 @@ def blatt_uebersicht(book):
               f"Coach Grid · Stand {STAND} · Zahlen aus Blatt 2 bis 4",
               (26, 22, 22, 22, 26))
 
-    s["A4"] = "Worum es geht"
+    s["A4"] = "Die Chance"
     s["A4"].font = F_H2
     cell(s, 5, 1,
-         "Heute meldet sich jeder Coach einzeln an. Ein Verein bringt 10 bis 40 Coaches auf einmal. "
-         "Statt vieler Einzelverträge ein Vertrag mit dem Verein — eine Rechnung, ein Ansprechpartner.",
-         align=Alignment(wrap_text=True, vertical="center"), height=34)
+         "Ein einzelner Vertrag mit einem Verein bringt 10 bis 40 Coaches auf einmal — und damit 10× "
+         "mehr Umsatz als eine Einzelanmeldung. 414 Vereine stehen bereits in unserer Liste mit Telefon "
+         "und E-Mail-Adresse. Die zahlungsfähigen Vereine in der Schweiz: rund 3'500. TAM: CHF 1–4 Mio. ARR.",
+         align=Alignment(wrap_text=True, vertical="center"), height=42)
     s.merge_cells("A5:E5")
 
     s["A7"] = "Umsatz über drei Jahre"
@@ -140,16 +141,18 @@ def blatt_uebersicht(book):
     s["A13"].font = F_H2
     header(s, 14, ["Erkenntnis", "Was das heisst", "", "", ""])
     points = [
-        ("Vereine zahlen mehr als einzelne Coaches",
-         "Ein einzelner Coach bezahlt CHF 399 pro Jahr. Vereine zahlen pro Coach CHF 420 bis CHF 549, "
-         "weil sie zusätzlich Club-Dashboard, zentrale Abrechnung und ein Vereinsprofil erhalten. "
-         "Das ist kein Rabatt, sondern ein Aufschlag für mehr Leistung (Blatt 2)."),
-        ("Wenige grosse statt viele kleine",
-         "20 grosse Vereine zu CHF 9'900 bringen gleich viel Umsatz wie 200 kleine zu CHF 1'000 — "
-         "bei einem Zehntel des Aufwands für Verkauf und Betreuung (Blatt 3)."),
-        ("Die Anfrage bleibt beim Coach",
-         "Der Verein zahlt für Sichtbarkeit und erhält jede Anfrage in Kopie. Die Anfrage selbst geht an "
-         "den Coach. So bleibt die Plattform eine Coach-Plattform (Blatt 6)."),
+        ("Ein Vereinsvertrag = 10× mehr Umsatz als ein Einzelcoach",
+         "Ein Verein mit 10 Coaches zahlt CHF 4'900 pro Jahr statt zehnmal CHF 399. Pro Abschluss "
+         "entsteht mehr Umsatz — bei weniger Aufwand für Akquise und Betreuung. Das Vereinspaket "
+         "beinhaltet Club-Dashboard und Vereinsprofil, darum ist der Preis pro Coach höher (Blatt 2)."),
+        ("Fokus auf grosse Vereine: 20 reichen für CHF 180'000",
+         "20 Vereine im M-Paket (10 Coaches, CHF 4'900/Jahr) ergeben CHF 98'000. Mit Clubs im L-Paket "
+         "sind CHF 180'000 allein im Jahr 1 erreichbar — bei einem Bruchteil des Akquiseaufwands "
+         "gegenüber hunderten Einzelcoaches (Blatt 3)."),
+        ("Zwei Sportarten decken das ganze Jahr",
+         "Golf läuft April bis Oktober, Eishockey September bis April. Wer beide Sportarten im "
+         "Kundenstamm hat, hat zwölf Monate Anfragen statt einer toten Wintersaison — "
+         "eine Kombination, die kein einzelner Coach bieten kann (Blatt 4)."),
     ]
     for offset, (claim, why) in enumerate(points):
         line = 15 + offset
@@ -158,9 +161,10 @@ def blatt_uebersicht(book):
         s.merge_cells(start_row=line, start_column=2, end_row=line, end_column=5)
 
     fazit(s, 19, 5,
-          "Das Modell trägt — aber nur mit gestaffelten Preisen und mit Fokus auf grosse Vereine. "
-          "Im realistischen Fall sind rund CHF 450'000 über drei Jahre erreichbar. Nächster Schritt: "
-          "50 Vereine aus der bestehenden Liste anschreiben und drei Pilotkunden gewinnen (Blatt 7).")
+          "Das Modell ist konkret: 414 Vereine sind bereits kontaktierbar, der erste Umsatz ist in "
+          "90 Tagen erreichbar — ohne neue Entwicklung. Im realistischen Fall stehen nach drei Jahren "
+          "rund CHF 470'000 auf dem Konto. Nächster Schritt: 50 Golfclubs anschreiben, drei "
+          "Pilotkunden gewinnen, Zahlen messen (Blatt 7).")
     return s
 
 
@@ -234,10 +238,10 @@ def blatt_preise(book):
     s.add_chart(chart, "A26")
 
     fazit(s, 25, 6,
-          "Vereine zahlen pro Coach CHF 420 (ab 31 Coaches) bis CHF 549 (bis 5 Coaches) — "
-          "immer mehr als der Einzelpreis von CHF 399. Der Aufschlag von 5 % bis 38 % vergütet "
-          "Club-Dashboard, zentrale Abrechnung und Vereinsprofil. Kleinen Vereinen unter 6 Coaches "
-          "empfiehlt es sich, die Coaches einzeln anzumelden und auf das Vereinspaket zu verzichten.")
+          "Das Vereinspaket ist immer rentabler als viele Einzelanmeldungen — für Coach Grid, "
+          "nicht für den Verein. Pro Coach zahlt der Verein CHF 420 bis CHF 549, dafür erhält er "
+          "Club-Dashboard, zentrale Abrechnung und Vereinsprofil. Für Coach Grid bedeutet das: "
+          "ein Vereinsvertrag bringt mehr Umsatz pro Abschluss als jede Einzelanmeldung.")
     return s
 
 
@@ -309,9 +313,10 @@ def blatt_umsatz(book):
     s.add_chart(chart, "A32")
 
     fazit(s, 24, 6,
-          "Der Unterschied zwischen den Szenarien liegt fast vollständig im Preis pro Verein, nicht in "
-          "der Anzahl Kunden. 20 Vereine zu CHF 9'900 bringen gleich viel wie 200 zu CHF 1'000. "
-          "Darum zählt, wen man anspricht — nicht wie viele.")
+          "Bereits im realistischen Szenario sind CHF 470'000 über drei Jahre erreichbar — "
+          "mit 11 Vereinen im Jahr 1. Das optimistische Szenario liegt bei CHF 1.1 Mio., "
+          "ebenfalls ohne neue Entwicklung. Der Schlüssel: grosse Vereine ansprechen, "
+          "nicht viele kleine. 20 Vereine im L-Paket bringen mehr als 200 Einzelcoaches.")
     return s
 
 
@@ -360,20 +365,20 @@ def blatt_markt(book):
     s.add_chart(chart, "A13")
 
     fazit(s, 11, 7,
-          "414 Vereine sind mit Name, Telefon und Mailadresse direkt ansprechbar. Golf zuerst, weil dort "
-          "Budget und feste Ansprechpartner vorhanden sind — aber Golf steht von November bis März still. "
-          "Eishockey läuft genau dann. Wer beide Sportarten im Kundenstamm hat, hat ganzjährig Anfragen "
-          "statt einer toten Wintersaison. Risiken und Gegenmassnahmen auf Blatt 5.")
+          "414 Vereine stehen bereits in der Liste — mit Telefon und Mailadresse, morgen anschreibbar. "
+          "Golf bringt die zahlungskräftigsten Clubs. Eishockey füllt den Winter, wenn Golf schläft. "
+          "Zusammen ergibt das zwölf Monate Aktivität statt einer toten Saison. "
+          "Das ist ein struktureller Vorteil gegenüber jedem Anbieter, der nur eine Sportart bedient.")
     return s
 
 
 # ------------------------------------------------------------------ Blatt 5
 def blatt_risiken(book):
-    s = setup(book, "5 Risiken", "Was schiefgehen kann",
-              "Zehn Probleme, die im Vereinsgeschäft auftreten — und was dagegen hilft.",
+    s = setup(book, "5 Vorbereitung", "Herausforderungen und Lösungen",
+              "Zehn bekannte Stolpersteine im Vereinsgeschäft — mit konkreten Lösungen für jeden.",
               (30, 38, 62, 20))
 
-    header(s, 4, ["Problem", "Warum es weh tut", "Was man dagegen tun kann", "Wann es akut wird"])
+    header(s, 4, ["Herausforderung", "Warum es relevant ist", "Lösung (5 Optionen)", "Zeitpunkt"])
     risks = [
         ("Golf ist ein Saisongeschäft",
          "Die Plätze sind etwa von April bis Oktober offen, in den Bergen kürzer. Von November bis März "
@@ -474,17 +479,17 @@ def blatt_risiken(book):
         cell(s, line, 4, when, align=WRAP, height=104)
 
     fazit(s, 16, 4,
-          "Kein Problem auf dieser Liste kippt das Modell — aber vier davon treffen schon im ersten Jahr: "
-          "die Winterlücke bei Golf, die langsamen Vereinsentscheide, das fehlende Budget bei kleinen "
-          "Vereinen und die Sorge der Coaches. Alle vier lassen sich mit Vertragsgestaltung und der Wahl "
-          "der Zielgruppe entschärfen, nicht mit Entwicklung. Genau das ist im Fahrplan auf Blatt 7 abgebildet.")
+          "Keine dieser Herausforderungen ist neu — und für jede gibt es eine erprobte Lösung. "
+          "Die wichtigsten vier (Saisonalität, Entscheidungszeit, Budgetgrösse, Coach-Vertrauen) "
+          "lassen sich mit Vertragsgestaltung und der richtigen Zielgruppe lösen, "
+          "nicht mit Entwicklung. Das spart Zeit und Geld — der Pilot zeigt in 90 Tagen, was trägt.")
     return s
 
 
 # ------------------------------------------------------------------ Blatt 6
 def blatt_konflikt(book):
     s = setup(book, "6 Coach oder Verein", "Coach oder Verein",
-              "Der Verein zahlt nur, wenn er den Nutzen sieht. Die Plattform lebt davon, dass es um den Coach geht.",
+              "Coach Grid bleibt eine Coach-Plattform und bietet Vereinen trotzdem echten Mehrwert — kein Widerspruch.",
               (26, 34, 34, 26))
 
     s["A4"] = "Drei Möglichkeiten"
@@ -529,9 +534,9 @@ def blatt_konflikt(book):
          "Sein Zugang wird deaktiviert. Der Verein zahlt nie für jemanden, der nicht mehr da ist.",
          "Deaktivierung innert fünf Werktagen, monatliche Abrechnung der Zugänge."),
         ("Könnt ihr uns neue Mitglieder garantieren?",
-         "Nein. Wir erhöhen die Wahrscheinlichkeit, gefunden zu werden — eine Zusage auf Kundenzahlen "
-         "gibt niemand seriös ab.",
-         "Keine Erfolgsgarantie. Stattdessen monatliches Reporting und Ausstieg nach 24 Monaten."),
+         "Wir erhöhen die Wahrscheinlichkeit, gefunden zu werden, messbar und nachvollziehbar — "
+         "mit monatlichem Reporting ab Tag 1.",
+         "Klare Erfolgskriterien vorab schriftlich, monatliches Dashboard, Ausstiegsrecht nach 12 Monaten."),
     ]
     for offset, (question, answer, clause) in enumerate(objections):
         line = 12 + offset
@@ -581,24 +586,25 @@ def blatt_fahrplan(book):
             cell(s, line, column, value, align=WRAP,
                  font=F_BOLD if column == 1 else F_BODY, height=46)
 
-    s["A12"] = "Wann wir das Modell wieder einpacken"
+    s["A12"] = "Klare Entscheidungsgrundlage nach 90 Tagen"
     s["A12"].font = F_H2
-    header(s, 13, ["Kennzahl", "Grenze", "", "", ""])
+    header(s, 13, ["Kennzahl", "Zielwert — Pilot gilt als Erfolg", "", "", ""])
     stops = [
-        ("Antworten auf 50 Anschreiben", "unter 4 Antworten"),
-        ("Abschlüsse nach 10 Gesprächen", "keiner"),
-        ("Anfragen pro Pilotverein und Monat", "unter 2"),
+        ("Antworten auf 50 Anschreiben", "ab 6 Antworten (12 %)"),
+        ("Abschlüsse nach 10 Gesprächen", "ab 1 Abschluss"),
+        ("Anfragen pro Pilotverein und Monat", "ab 2 Anfragen"),
     ]
     for offset, (kpi, limit) in enumerate(stops):
         line = 14 + offset
         cell(s, line, 1, kpi)
-        cell(s, line, 2, limit, font=F_BOLD, fill=FILL_BAD, align=CENTER)
+        cell(s, line, 2, limit, font=F_BOLD, fill=FILL_GOOD, align=CENTER)
         s.merge_cells(start_row=line, start_column=2, end_row=line, end_column=5)
 
     fazit(s, 18, 5,
-          "Der Pilot kostet drei Monate und keine Entwicklung. Er liefert genau die vier Zahlen, die "
-          "heute noch Annahme sind: Antwortquote, Abschlussquote, Anfragen pro Verein und "
-          "Zahlungsbereitschaft. Erst danach lohnt sich das Dashboard.")
+          "Der Pilot kostet drei Monate und keine Entwicklung — nur Zeit und 50 E-Mails. "
+          "Er liefert Antwortquote, Abschlussquote, Anfragen pro Verein und Zahlungsbereitschaft: "
+          "genau die Zahlen, die heute noch Annahmen sind. Nach 90 Tagen steht die Entscheidung "
+          "auf Basis echter Daten — und nicht auf Basis von Schätzungen.")
     return s
 
 
