@@ -184,7 +184,7 @@ def blatt_preise(book):
     header(s, 7, ["Stufe", "Coaches", "Pro Coach / Jahr", "Monatlich",
                   "Jahresbeispiel", "Aufschlag vs. Einzelcoach"])
     # (name, coaches_span, per_coach_price, example_coaches)
-    tiers = [("S", "1 – 5", 549, 4), ("M", "6 – 15", 490, 10),
+    tiers = [("S", "1 – 5", 549, 3), ("M", "6 – 15", 490, 10),
              ("L", "16 – 30", 449, 20), ("XL", "ab 31", 420, 35)]
     for offset, (name, span, per_coach, example_n) in enumerate(tiers):
         line = 8 + offset
@@ -197,7 +197,8 @@ def blatt_preise(book):
         s.row_dimensions[line].height = 22
 
     cell(s, 12, 1,
-         "Jahresbeispiel: S = 4 Coaches, M = 10, L = 20, XL = 35. "
+         "Jahresbeispiel: S = 3 Coaches (CHF 1'647/Jahr = CHF 137/Monat), M = 10, L = 20, XL = 35. "
+         "Einstiegspreis ~0.8 % eines typischen Golfclub-Budgets (CHF 200'000+). "
          "Inklusive: Club-Dashboard, Sammelrechnung, Analytics, Vereinsprofil auf thecoachgrid.com.",
          font=F_SMALL, align=MID)
     s.merge_cells("A12:F12")
@@ -238,10 +239,11 @@ def blatt_preise(book):
     s.add_chart(chart, "A26")
 
     fazit(s, 25, 6,
-          "Das Vereinspaket ist immer rentabler als viele Einzelanmeldungen — für Coach Grid, "
-          "nicht für den Verein. Pro Coach zahlt der Verein CHF 420 bis CHF 549, dafür erhält er "
-          "Club-Dashboard, zentrale Abrechnung und Vereinsprofil. Für Coach Grid bedeutet das: "
-          "ein Vereinsvertrag bringt mehr Umsatz pro Abschluss als jede Einzelanmeldung.")
+          "Der Einstieg liegt bei CHF 1'647/Jahr (3 Coaches, Stufe S) — das sind CHF 137/Monat und "
+          "weniger als 1 % eines typischen Golfclub-Budgets. Für Coach Grid bedeutet jeder Vereinsvertrag "
+          "mehr Umsatz pro Abschluss als zehn Einzelanmeldungen. Zusätzliches Modell im Aufbau: "
+          "Coaches geben einen kleinen Anteil ihrer Buchungseinnahmen ab — der Verein verdient mit und "
+          "hat damit einen eigenen Anreiz, seine Coaches aktiv zu platzieren.")
     return s
 
 
@@ -330,7 +332,7 @@ def blatt_markt(book):
                   "Stufe", "Umsatz bei 100 %", "Warum in dieser Reihenfolge"])
     market = [
         ("Golf", 103, 100, "April bis Oktober", "S", "='2 Preise'!E8",
-         "Höchste Zahlungskraft: eigener Platz, Geschäftsführung, Marketingbudget. Im Winter ruht der Betrieb."),
+         "Höchste Zahlungskraft: eigener Platz, Geschäftsführung, Marketingbudget. Typisches Club-Budget CHF 200'000+ — unser Einstiegspreis entspricht 0.8 % davon. Im Winter ruht der Betrieb."),
         ("Tennis", 99, 900, "Aussenplätze April bis Oktober, Halle ganzjährig", "M", "='2 Preise'!E9",
          "Grösste Zahl an Clubs mit eigener Anlage und eigenen Trainern."),
         ("Schwimmen", 180, 175, "ganzjährig (Hallenbad)", "M", "='2 Preise'!E9",
@@ -366,9 +368,10 @@ def blatt_markt(book):
 
     fazit(s, 11, 7,
           "414 Vereine stehen bereits in der Liste — mit Telefon und Mailadresse, morgen anschreibbar. "
-          "Golf bringt die zahlungskräftigsten Clubs. Eishockey füllt den Winter, wenn Golf schläft. "
-          "Zusammen ergibt das zwölf Monate Aktivität statt einer toten Saison. "
-          "Das ist ein struktureller Vorteil gegenüber jedem Anbieter, der nur eine Sportart bedient.")
+          "Wichtig: der Schweizer Durchschnittsverein hat ein Budget von CHF 65'000 — unsere Zielgruppe "
+          "sind nicht diese Vereine. Golfclubs mit eigener Anlage kommen auf CHF 200'000+, Tennisclubs auf "
+          "CHF 100'000–300'000. Das sind genau die Clubs in unserer Liste. Golf + Eishockey = zwölf Monate "
+          "Aktivität. Das ist ein struktureller Vorteil gegenüber jedem Anbieter, der nur eine Sportart bedient.")
     return s
 
 
@@ -397,9 +400,11 @@ def blatt_risiken(book):
          "→ Im Herbst verkaufen: Budgetfenster und Vereinsjahresbeginn fallen dann zusammen.",
          "ab dem ersten Gespräch"),
         ("Zielgruppe scharf definieren",
-         "82 % der Schweizer Vereine haben kein angestelltes Personal. Die 18 % mit Anlage und Budget "
-         "sind dafür solide Kunden — und genau diese stehen in unserer Liste.",
+         "82 % der Schweizer Vereine haben kein angestelltes Personal und ein Budget von CHF 65'000 im "
+         "Schnitt. Die 18 % mit eigener Anlage — Golfclubs CHF 200'000+, Tennisclubs CHF 100'000–300'000 "
+         "— sind dafür solide Kunden. Genau diese stehen in unserer Liste.",
          "→ Nur Vereine mit eigener Anlage ansprechen (Golf, Tennis, Schwimmen, Reiten, Eishockey).\n"
+         "→ Einstiegspaket S (3 Coaches, CHF 1'647/Jahr) = weniger als 1 % eines Golfclub-Budgets.\n"
          "→ Zahlung aus dem Marketing- oder Sponsoring-Budget statt aus der Vereinskasse vorschlagen.\n"
          "→ Per-Coach-Abrechnung: der Betrag wächst mit dem Verein mit, kein Schock durch eine Pauschale.\n"
          "→ Kleine Vereine ohne Anlage via Einzelcoach-Angebot (CHF 399) bedienen, nicht via Paket.",
