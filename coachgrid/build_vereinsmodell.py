@@ -140,9 +140,10 @@ def blatt_uebersicht(book):
     s["A13"].font = F_H2
     header(s, 14, ["Erkenntnis", "Was das heisst", "", "", ""])
     points = [
-        ("Ein Preis für alle geht nicht",
-         "CHF 10'000 im Jahr entsprechen 25 Coaches zum Einzelpreis. Ein Verein mit 15 Coaches zahlt "
-         "damit mehr, als wenn sich seine Coaches einzeln anmelden. Lösung: Staffelpreise (Blatt 2)."),
+        ("Vereine zahlen mehr als einzelne Coaches",
+         "Ein einzelner Coach bezahlt CHF 399 pro Jahr. Vereine zahlen pro Coach CHF 420 bis CHF 549, "
+         "weil sie zusätzlich Club-Dashboard, zentrale Abrechnung und ein Vereinsprofil erhalten. "
+         "Das ist kein Rabatt, sondern ein Aufschlag für mehr Leistung (Blatt 2)."),
         ("Wenige grosse statt viele kleine",
          "20 grosse Vereine zu CHF 9'900 bringen gleich viel Umsatz wie 200 kleine zu CHF 1'000 — "
          "bei einem Zehntel des Aufwands für Verkauf und Betreuung (Blatt 3)."),
@@ -166,68 +167,77 @@ def blatt_uebersicht(book):
 # ------------------------------------------------------------------ Blatt 2
 def blatt_preise(book):
     s = setup(book, "2 Preise", "Preise",
-              "Der Vereinspreis muss unter der Summe der Einzelanmeldungen liegen.",
+              "Einzelcoach CHF 399 / Jahr. Vereine zahlen pro Coach einen Aufschlag — "
+              "dafür erhalten sie Club-Dashboard, zentrale Abrechnung und Vereinsprofil.",
               (26, 20, 20, 20, 20, 26))
 
-    cell(s, 4, 1, "Preis pro Coach und Jahr (heute)", font=F_BOLD)
+    cell(s, 4, 1, "Einzelcoach — Preis pro Jahr (heute)", font=F_BOLD)
     cell(s, 4, 2, 399, font=F_INPUT, fmt=CHF, fill=FILL_INPUT, align=CENTER)
     cell(s, 4, 3, "Eingabe", font=F_SMALL, align=CENTER)
 
-    s["A6"] = "Staffelpreise"
+    s["A6"] = "Vereinspakete — Preis pro Coach und Jahr"
     s["A6"].font = F_H2
-    header(s, 7, ["Stufe", "Coaches", "Preis pro Jahr", "Preis pro Monat",
-                  "Ersparnis pro Jahr", "Preis pro Coach"])
-    tiers = [("S", "1 – 10", 2490, 249, 10), ("M", "11 – 25", 4900, 490, 18),
-             ("L", "26 – 40", 9900, 990, 33), ("XL", "ab 41", 14900, 1490, 50)]
-    for offset, (name, span, year, month, mid) in enumerate(tiers):
+    header(s, 7, ["Stufe", "Coaches", "Pro Coach / Jahr", "Monatlich",
+                  "Jahresbeispiel", "Aufschlag vs. Einzelcoach"])
+    # (name, coaches_span, per_coach_price, example_coaches)
+    tiers = [("S", "1 – 5", 549, 4), ("M", "6 – 15", 490, 10),
+             ("L", "16 – 30", 449, 20), ("XL", "ab 31", 420, 35)]
+    for offset, (name, span, per_coach, example_n) in enumerate(tiers):
         line = 8 + offset
         cell(s, line, 1, name, font=F_BOLD, align=CENTER)
         cell(s, line, 2, span, align=CENTER)
-        cell(s, line, 3, year, font=F_INPUT, fmt=CHF, fill=FILL_INPUT, align=CENTER)
-        cell(s, line, 4, month, font=F_INPUT, fmt=CHF, fill=FILL_INPUT, align=CENTER)
-        cell(s, line, 5, f"=D{line}*12-C{line}", fmt=CHF, font=F_BOLD, align=CENTER)
-        cell(s, line, 6, f"=C{line}/{mid}", fmt=CHF, align=CENTER)
+        cell(s, line, 3, per_coach, font=F_INPUT, fmt=CHF, fill=FILL_INPUT, align=CENTER)
+        cell(s, line, 4, f"=C{line}/12", fmt=CHF, align=CENTER)
+        cell(s, line, 5, f"=C{line}*{example_n}", fmt=CHF, font=F_BOLD, align=CENTER)
+        cell(s, line, 6, f"=(C{line}-$B$4)/$B$4", fmt="0%", align=CENTER, fill=FILL_GOOD)
         s.row_dimensions[line].height = 22
 
     cell(s, 12, 1,
-         "Wer jährlich zahlt, spart sichtbar. Beim grossen Verein sind das CHF 1'980.",
+         "Jahresbeispiel: S = 4 Coaches, M = 10, L = 20, XL = 35. "
+         "Inklusive: Club-Dashboard, Sammelrechnung, Analytics, Vereinsprofil auf thecoachgrid.com.",
          font=F_SMALL, align=MID)
     s.merge_cells("A12:F12")
+    s.row_dimensions[12].height = 28
 
-    s["A14"] = "Gegenprobe: ein Einheitspreis von CHF 10'000"
+    s["A14"] = "Jahreskosten im Vergleich: Vereinspaket vs. Einzelanmeldungen"
     s["A14"].font = F_H2
-    header(s, 15, ["Coaches im Verein", "Einzeln angemeldet", "Einheitspreis",
-                   "Differenz", "Verhältnis", "Ergebnis"])
-    for offset, count in enumerate([5, 10, 15, 20, 25, 30, 40, 50]):
+    header(s, 15, ["Coaches", "Stufe", "Vereinspreis total", "Einzeln total",
+                   "Mehrkosten", "Aufschlag"])
+    # (n_coaches, tier_row, tier_name)
+    comparison = [
+        (3,  8,  "S"),
+        (5,  8,  "S"),
+        (10, 9,  "M"),
+        (15, 9,  "M"),
+        (20, 10, "L"),
+        (30, 10, "L"),
+        (40, 11, "XL"),
+    ]
+    for offset, (n, tier_row, tier_name) in enumerate(comparison):
         line = 16 + offset
-        cell(s, line, 1, count, fmt=NUM, align=CENTER, font=F_BOLD)
-        cell(s, line, 2, f"=A{line}*$B$4", fmt=CHF, align=CENTER)
-        cell(s, line, 3, 10000, fmt=CHF, align=CENTER)
-        cell(s, line, 4, f"=C{line}-B{line}", fmt=CHF, align=CENTER)
-        cell(s, line, 5, f"=C{line}/B{line}", fmt="0.00", align=CENTER)
-        if count == 25:
-            text, fill = "gleich teuer", FILL_WARN
-        elif count * 399 < 10000:
-            text, fill = "Verein zahlt mehr", FILL_BAD
-        else:
-            text, fill = "Verein spart", FILL_GOOD
-        cell(s, line, 6, text, fill=fill, font=F_BOLD, align=CENTER)
+        cell(s, line, 1, n, fmt=NUM, font=F_BOLD, align=CENTER)
+        cell(s, line, 2, tier_name, align=CENTER)
+        cell(s, line, 3, f"={n}*$C${tier_row}", fmt=CHF, align=CENTER)
+        cell(s, line, 4, f"={n}*$B$4", fmt=CHF, align=CENTER)
+        cell(s, line, 5, f"=C{line}-D{line}", fmt=CHF, font=F_BOLD, align=CENTER, fill=FILL_WARN)
+        cell(s, line, 6, f"=(C{line}-D{line})/D{line}", fmt="0%", align=CENTER, fill=FILL_GOOD)
         s.row_dimensions[line].height = 20
 
     chart = BarChart()
     chart.type = "col"
-    chart.title = "Einheitspreis gegen Summe der Einzelanmeldungen"
+    chart.title = "Vereinspreis vs. Einzelanmeldungen (CHF / Jahr)"
     chart.y_axis.title = "CHF pro Jahr"
-    chart.x_axis.title = "Coaches im Verein"
+    chart.x_axis.title = "Anzahl Coaches im Verein"
     chart.height, chart.width = 8, 18
-    chart.add_data(Reference(s, min_col=2, max_col=3, min_row=15, max_row=23), titles_from_data=True)
-    chart.set_categories(Reference(s, min_col=1, min_row=16, max_row=23))
+    chart.add_data(Reference(s, min_col=3, max_col=4, min_row=15, max_row=22), titles_from_data=True)
+    chart.set_categories(Reference(s, min_col=1, min_row=16, max_row=22))
     s.add_chart(chart, "A26")
 
     fazit(s, 25, 6,
-          "CHF 10'000 geteilt durch CHF 399 ergibt 25 Coaches. Alles darunter ist für den Verein ein "
-          "schlechtes Geschäft und im Gespräch nicht zu halten. Mit der Staffel bleibt jede Stufe unter "
-          "der Summe der Einzelanmeldungen — der Verein spart auf jeder Stufe.")
+          "Vereine zahlen pro Coach CHF 420 (ab 31 Coaches) bis CHF 549 (bis 5 Coaches) — "
+          "immer mehr als der Einzelpreis von CHF 399. Der Aufschlag von 5 % bis 38 % vergütet "
+          "Club-Dashboard, zentrale Abrechnung und Vereinsprofil. Kleinen Vereinen unter 6 Coaches "
+          "empfiehlt es sich, die Coaches einzeln anzumelden und auf das Vereinspaket zu verzichten.")
     return s
 
 
@@ -244,7 +254,7 @@ def blatt_umsatz(book):
         ("Vereine angeschrieben", 200, 350, 414, NUM),
         ("davon antworten", 0.12, 0.20, 0.30, PCT),
         ("davon werden Kunde", 0.08, 0.15, 0.25, PCT),
-        ("Preis pro Verein und Jahr", 2490, 4900, 6900, CHF),
+        ("Preis pro Verein und Jahr", 2200, 4900, 9000, CHF),
         ("bleiben im Folgejahr", 0.75, 0.85, 0.90, PCT),
         ("neue Vereine im Jahr 2", 8, 20, 45, NUM),
         ("neue Vereine im Jahr 3", 10, 30, 70, NUM),
@@ -314,13 +324,13 @@ def blatt_markt(book):
     header(s, 4, ["Sportart", "In unserer Liste", "Clubs in der Schweiz", "Saison",
                   "Stufe", "Umsatz bei 100 %", "Warum in dieser Reihenfolge"])
     market = [
-        ("Golf", 103, 100, "April bis Oktober", "S", "='2 Preise'!C8",
+        ("Golf", 103, 100, "April bis Oktober", "S", "='2 Preise'!E8",
          "Höchste Zahlungskraft: eigener Platz, Geschäftsführung, Marketingbudget. Im Winter ruht der Betrieb."),
-        ("Tennis", 99, 900, "Aussenplätze April bis Oktober, Halle ganzjährig", "M", "='2 Preise'!C9",
+        ("Tennis", 99, 900, "Aussenplätze April bis Oktober, Halle ganzjährig", "M", "='2 Preise'!E9",
          "Grösste Zahl an Clubs mit eigener Anlage und eigenen Trainern."),
-        ("Schwimmen", 180, 175, "ganzjährig (Hallenbad)", "M", "='2 Preise'!C9",
+        ("Schwimmen", 180, 175, "ganzjährig (Hallenbad)", "M", "='2 Preise'!E9",
          "Laufendes Kursgeschäft ohne Saisonlücke; dort wird ohnehin nach Angeboten gesucht."),
-        ("Reiten und Eishockey", 32, 450, "Eishockey September bis April, Reiten ganzjährig", "M", "='2 Preise'!C9",
+        ("Reiten und Eishockey", 32, 450, "Eishockey September bis April, Reiten ganzjährig", "M", "='2 Preise'!E9",
          "Eishockey füllt genau die Monate, in denen Golf stillsteht."),
     ]
     for offset, (sport, ours, total, season, tier, price, why) in enumerate(market):
