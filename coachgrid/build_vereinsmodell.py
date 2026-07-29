@@ -378,98 +378,88 @@ def blatt_risiken(book):
               "Zehn bekannte Stolpersteine im Vereinsgeschäft — mit konkreten Lösungen für jeden.",
               (30, 38, 62, 20))
 
-    header(s, 4, ["Herausforderung", "Warum es relevant ist", "Lösung (5 Optionen)", "Zeitpunkt"])
+    header(s, 4, ["Thema", "Was man wissen muss", "Konkrete Massnahmen", "Ab wann relevant"])
     risks = [
-        ("Golf ist ein Saisongeschäft",
-         "Die Plätze sind etwa von April bis Oktober offen, in den Bergen kürzer. Von November bis März "
-         "kommen kaum Anfragen — der Club sieht keinen Gegenwert und stellt das Abo infrage.",
-         "1. Jahresvertrag statt Monatsabo: der Nutzen wird über die Saison gemessen, nicht über den Monat.\n"
-         "2. Eishockey als Gegengewicht aufnehmen — dessen Saison läuft September bis April.\n"
-         "3. Die Wintermonate im Vertrag als Vorbereitungszeit ausweisen: Profile, Fotos, Kursangebote für die neue Saison.\n"
-         "4. Reporting pro Saison statt pro Monat verschicken.\n"
-         "5. Im Winter verkaufen, im Frühling starten — dann fallen Budgetbeschluss und Saisonstart zusammen.",
-         "ab dem ersten Winter"),
-        ("Vereine entscheiden langsam",
-         "Der Vorstand arbeitet ehrenamtlich und tagt oft nur quartalsweise. Grössere Ausgaben brauchen die "
-         "Generalversammlung. Aus einem Gespräch werden schnell sechs Monate bis zur Unterschrift.",
-         "1. Direkt beim Geschäftsführer oder Sekretariat ansetzen statt beim Gesamtvorstand.\n"
-         "2. Den Preis so wählen, dass er unter der Genehmigungsschwelle des Vorstands liegt.\n"
-         "3. Eine kostenlose Testphase bis zur nächsten Generalversammlung anbieten.\n"
-         "4. Vertragsbeginn auf den Start des Vereinsjahrs legen.\n"
-         "5. Den Verkauf ins Budgetfenster im Herbst legen, nicht ins Frühjahr.",
-         "sofort, im ersten Gespräch"),
-        ("Den meisten Vereinen fehlt schlicht das Geld",
-         "82 Prozent der Schweizer Sportvereine haben keine bezahlte Person, die durchschnittlichen "
-         "Jahreseinnahmen liegen bei CHF 69'000. Ein Abo über CHF 10'000 wäre dort ein Siebtel des Budgets.",
-         "1. Nur Vereine mit eigener Anlage ansprechen — dort gibt es Fixkosten und damit eine Buchhaltung.\n"
-         "2. Kleinere Vereine gar nicht als Verein verkaufen, sondern deren Coaches einzeln zu CHF 399.\n"
-         "3. Zahlung aus dem Sponsoring- oder Marketingtopf statt aus der Vereinskasse vorschlagen.\n"
-         "4. Abrechnung pro Coach statt Pauschale, damit der Betrag mitwächst.\n"
-         "5. Rahmenvertrag über einen Verband prüfen statt Einzelverträge.",
-         "bei jedem zweiten Kontakt"),
-        ("Coaches fühlen sich übergangen",
-         "Wenn der Verein den Zugang bezahlt, entsteht schnell der Eindruck, das Profil gehöre dem Verein. "
-         "Genau die Coaches, wegen denen die Plattform existiert, verlieren dann das Interesse.",
-         "1. Die Anfrage geht an den Coach, der Verein bekommt sie in Kopie (Blatt 6).\n"
-         "2. Das Profil bleibt beim Coach, auch wenn er den Verein verlässt.\n"
-         "3. Bewertungen und Referenzen gehören dem Coach, nicht dem Vereinskonto.\n"
-         "4. Coaches vor der Unterschrift des Vereins informieren, nicht danach.\n"
-         "5. Den Vereinsnamen als Zusatz im Profil führen, nicht als Absender.",
-         "sobald der erste Verein aktiv ist"),
-        ("Der Coach arbeitet privat weiter",
-         "Der Verein zahlt, die Anfragen laufen aber an ihm vorbei in private Stunden. Dann bezahlt der "
-         "Verein die Sichtbarkeit für ein Geschäft, an dem er nichts verdient.",
-         "1. Preisuntergrenze im Vertrag: Privatstunden eines Vereinscoaches liegen mindestens auf Vereinsniveau.\n"
-         "2. Ein zweites, privates Profil nur mit schriftlicher Freigabe des Vereins.\n"
-         "3. Der Zugangscode erlischt beim Vereinsaustritt.\n"
-         "4. Das Dashboard zeigt dem Verein alle Anfragen an seine Coaches.\n"
-         "5. Verstoss führt zum Entzug des Zugangs, nicht zu einer Diskussion.",
-         "nach den ersten Monaten"),
-        ("Zu wenig Rücklauf, keine Verlängerung",
-         "Wir können keine neuen Mitglieder garantieren. Bleiben die Anfragen aus, verlängert der Verein "
-         "nach einem Jahr nicht — und erzählt es den Nachbarvereinen.",
-         "1. Erfolgskriterien vor der Unterschrift schriftlich festhalten.\n"
-         "2. Monatliches Reporting ab dem ersten Tag, auch wenn die Zahlen klein sind.\n"
-         "3. Erstes Jahr zum halben Preis gegen das Recht, den Verein als Referenz zu nennen.\n"
-         "4. Ausstiegsmöglichkeit nach zwölf Monaten statt Streit um die Restlaufzeit.\n"
-         "5. Bei schwachen Zahlen nachbessern (mehr Sichtbarkeit) statt Geld zurückzahlen.",
-         "nach zwölf Monaten"),
-        ("Wenige Kunden tragen den ganzen Umsatz",
-         "Zwanzig grosse Vereine bringen den Umsatz von zweihundert kleinen — kündigen drei davon, "
-         "bricht ein Sechstel des Geschäfts weg.",
-         "1. Kein Verein darf mehr als 15 Prozent des Vereinsumsatzes ausmachen.\n"
-         "2. Das Einzelcoach-Geschäft bewusst weiterführen, nicht ersetzen.\n"
-         "3. Vertragsenden über das Jahr verteilen statt alle per 31. Dezember.\n"
-         "4. Nutzung des Dashboards als Frühwarnsignal beobachten.\n"
-         "5. Mindestens zwei Sportarten im Kundenstamm halten.",
-         "ab dem zehnten Kunden"),
-        ("Onboarding von 40 Coaches kostet Zeit",
-         "Ein Grossverein bedeutet vierzig Profile mit Foto, Text und Qualifikationen. Ohne Prozess "
-         "verbrennt das mehr Zeit, als das Abo einbringt.",
-         "1. Selbstregistrierung der Coaches über einen Vereinscode.\n"
-         "2. Einmalige Einrichtungsgebühr, die den Aufwand deckt.\n"
-         "3. Ein Ansprechpartner im Verein, der die Coaches sammelt und nachfasst.\n"
-         "4. Profile per Liste importieren statt einzeln erfassen.\n"
-         "5. Den Zeitaufwand im Pilot messen und in den Preis der nächsten Stufe einrechnen.",
+        ("Golf-Saison als Chance planen",
+         "Golf läuft April bis Oktober — das ist bekannt und planbar. Wer den Vertrag auf die Saison "
+         "abstimmt, liefert dem Club von Anfang an den richtigen Vergleich.",
+         "→ Jahresvertrag: Erfolg wird über die Saison gemessen, nicht über den Monat.\n"
+         "→ Onboarding im Winter: Profile, Fotos und Kursplan sind parat, wenn die Saison startet.\n"
+         "→ Eishockey ergänzen: Saison läuft September bis April — zusammen ganzjährig aktiv.\n"
+         "→ Reporting pro Saison: zeigt das volle Bild statt einen einzelnen Wintermonat.",
+         "ab Vertragsschluss"),
+        ("Vereinsentscheide richtig timen",
+         "Vereinsvorstände tagen oft quartalsweise. Wer das weiss, kann den Verkaufsprozess "
+         "darauf ausrichten und vermeidet unnötige Wartezeit.",
+         "→ Direkt beim Geschäftsführer oder Sekretariat ansetzen — der kann meist ohne Vorstand entscheiden.\n"
+         "→ Preis unter der Genehmigungsschwelle des Vorstands wählen (oft CHF 5'000).\n"
+         "→ Kostenlose Testphase bis zur nächsten Generalversammlung anbieten.\n"
+         "→ Im Herbst verkaufen: Budgetfenster und Vereinsjahresbeginn fallen dann zusammen.",
+         "ab dem ersten Gespräch"),
+        ("Zielgruppe scharf definieren",
+         "82 % der Schweizer Vereine haben kein angestelltes Personal. Die 18 % mit Anlage und Budget "
+         "sind dafür solide Kunden — und genau diese stehen in unserer Liste.",
+         "→ Nur Vereine mit eigener Anlage ansprechen (Golf, Tennis, Schwimmen, Reiten, Eishockey).\n"
+         "→ Zahlung aus dem Marketing- oder Sponsoring-Budget statt aus der Vereinskasse vorschlagen.\n"
+         "→ Per-Coach-Abrechnung: der Betrag wächst mit dem Verein mit, kein Schock durch eine Pauschale.\n"
+         "→ Kleine Vereine ohne Anlage via Einzelcoach-Angebot (CHF 399) bedienen, nicht via Paket.",
+         "bei der Listenauswahl"),
+        ("Coaches aktiv einbinden",
+         "Die Coaches sind der Kern der Plattform. Wenn sie wissen, was das Vereinspaket für sie bedeutet, "
+         "werden sie es mittragen statt hinterfragen.",
+         "→ Anfragen gehen direkt an den Coach — der Verein erhält nur eine Kopie (Blatt 6).\n"
+         "→ Profil bleibt beim Coach, auch wenn er den Verein verlässt.\n"
+         "→ Bewertungen und Referenzen gehören dem Coach, nicht dem Vereinskonto.\n"
+         "→ Coaches vor der Unterschrift des Vereins informieren, nicht danach.",
+         "vor Vertragsschluss"),
+        ("Spielregeln für private Buchungen klären",
+         "Manche Coaches bieten neben dem Vereinsangebot auch private Stunden an. Das ist legitim — "
+         "solange es klar geregelt ist.",
+         "→ Preisuntergrenze im Vertrag: Privatstunden liegen mindestens auf Vereinsniveau.\n"
+         "→ Zweites Privat-Profil nur mit schriftlicher Freigabe des Vereins.\n"
+         "→ Dashboard zeigt dem Verein alle Anfragen an seine Coaches transparent.\n"
+         "→ Zugangscode erlischt automatisch beim Vereinsaustritt des Coaches.",
+         "ab erstem Monat"),
+        ("Mehrwert früh sichtbar machen",
+         "Der Verein verlängert, wenn er sieht, was das Abo bringt. Monatliches Reporting "
+         "macht den Nutzen greifbar — selbst in ruhigen Monaten.",
+         "→ Erfolgskriterien (z. B. 2 Anfragen/Monat) vor der Unterschrift schriftlich festhalten.\n"
+         "→ Monatliches Reporting ab Tag 1 — auch wenn die Zahlen klein starten.\n"
+         "→ Erstes Jahr zum halben Preis gegen das Recht, den Verein als Referenz zu nennen.\n"
+         "→ Bei schwachen Zahlen aktiv nachbessern (mehr Sichtbarkeit, bessere Profile) statt abwarten.",
+         "nach 3 Monaten"),
+        ("Kundenmix von Anfang an aufbauen",
+         "Wenige grosse Vereine bringen viel Umsatz — das ist ein Vorteil, den man mit einem "
+         "durchdachten Mix absichert.",
+         "→ Kein Verein über 15 % des Vereinsumsatzes — Diversifikation schützt.\n"
+         "→ Einzelcoach-Geschäft parallel weiterführen: gibt Stabilität und neue Vereins-Leads.\n"
+         "→ Vertragsenden über das Jahr verteilen, nicht alle per 31. Dezember.\n"
+         "→ Mindestens zwei Sportarten im Kundenstamm: Golf + Eishockey = ganzjährige Aktivität.",
+         "ab dem fünften Kunden"),
+        ("Grossverein-Onboarding skalierbar gestalten",
+         "Ein Verein mit 30 Coaches ist beim ersten Mal aufwendig. Mit einem guten Prozess "
+         "ist der zweite dreimal so schnell.",
+         "→ Selbstregistrierung der Coaches über einen Vereinscode — kein manueller Import.\n"
+         "→ Einmalige Einrichtungsgebühr deckt den Erstaufwand, gibt dem Verein klare Erwartungen.\n"
+         "→ Einen Ansprechpartner im Verein benennen, der intern sammelt und nachfasst.\n"
+         "→ Zeitaufwand im Piloten messen und in den Standardprozess überführen.",
          "beim ersten Grossverein"),
-        ("Der Verband baut es selbst",
-         "Swiss Tennis, Swiss Golf oder Swiss Aquatics haben die Vereine bereits als Mitglieder. Bauen sie "
-         "ein eigenes Verzeichnis, verlieren wir den Zugang zu genau dieser Gruppe.",
-         "1. Den Verband als Partner ansprechen, bevor er es selbst versucht.\n"
-         "2. Auf Buchung und Lektion setzen — eine reine Auflistung kann jeder Verband selbst.\n"
-         "3. Die ersten Clubs mit einer Exklusivität in ihrer Region binden.\n"
-         "4. Schnell sein: ein Verbandsprojekt braucht Jahre, wir brauchen Monate.\n"
-         "5. Die Marke bei den Coaches aufbauen — die bleiben, auch wenn der Verein wechselt.",
-         "im zweiten Jahr"),
-        ("Kaltakquise per Mail",
-         "Wir schreiben Vereine an, die uns nicht kennen. Ohne Sorgfalt landet das im Spam und schadet "
-         "der Absenderadresse für alle künftigen Mails.",
-         "1. Nur allgemeine Vereinsadressen verwenden, keine privaten Adressen von Vorstandsmitgliedern.\n"
-         "2. Abmeldemöglichkeit in jeder Mail, Absender und Kontakt klar erkennbar.\n"
-         "3. Nach einem Widerspruch die Adresse dauerhaft aus der Liste nehmen.\n"
-         "4. Höchstens zweimal schreiben, danach telefonisch nachfassen.\n"
-         "5. In Wellen von 50 Adressen versenden statt 414 auf einmal.",
-         "ab der ersten Welle"),
+        ("Verbände als Partner gewinnen",
+         "Swiss Tennis, Swiss Golf und Swiss Aquatics haben direkten Zugang zu allen Mitgliedsvereinen. "
+         "Eine Partnerschaft öffnet Türen, die Einzelakquise nicht öffnet.",
+         "→ Verband frühzeitig als Partner ansprechen statt abwarten.\n"
+         "→ Auf Buchung und Matching setzen — reine Vereinsverzeichnisse kann jeder Verband selbst bauen.\n"
+         "→ Erste Clubs in einer Region exklusiv einbinden — schafft Referenzen für den Verband.\n"
+         "→ Marke bei den Coaches aufbauen: die bleiben loyal, auch wenn Verbände wechseln.",
+         "im ersten Jahr"),
+        ("Erstkontakt professionell gestalten",
+         "414 Vereine stehen in der Liste — ein gezieltes, professionelles Anschreiben öffnet Türen. "
+         "Qualität vor Quantität zahlt sich aus.",
+         "→ Persönliche Anrede, Bezug auf Sportart und Vereinsgrösse — kein generisches Massen-Mail.\n"
+         "→ In Wellen von 50 versenden statt 414 auf einmal — so kann man auf Rückmeldungen reagieren.\n"
+         "→ Nach vier Tagen telefonisch nachfassen: viele Entscheider antworten lieber am Telefon.\n"
+         "→ Abmeldemöglichkeit sauber einbauen, Absender klar erkennbar — schützt die Absender-Reputation.",
+         "ab Woche 3"),
     ]
     for offset, (problem, hurt, options, when) in enumerate(risks):
         line = 5 + offset
@@ -479,10 +469,10 @@ def blatt_risiken(book):
         cell(s, line, 4, when, align=WRAP, height=104)
 
     fazit(s, 16, 4,
-          "Keine dieser Herausforderungen ist neu — und für jede gibt es eine erprobte Lösung. "
-          "Die wichtigsten vier (Saisonalität, Entscheidungszeit, Budgetgrösse, Coach-Vertrauen) "
-          "lassen sich mit Vertragsgestaltung und der richtigen Zielgruppe lösen, "
-          "nicht mit Entwicklung. Das spart Zeit und Geld — der Pilot zeigt in 90 Tagen, was trägt.")
+          "Alle zehn Punkte sind bekannt und lösbar — kein einziger erfordert neue Entwicklung. "
+          "Saisonalität, Entscheidungszeit, Zielgruppe und Coach-Einbindung lassen sich mit "
+          "Vertragsgestaltung und dem richtigen Erstkontakt regeln. Wer diese Liste kennt, "
+          "ist vorbereitet — und der Pilot in 90 Tagen liefert die Zahlen, um es zu belegen.")
     return s
 
 
