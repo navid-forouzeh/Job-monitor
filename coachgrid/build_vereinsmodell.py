@@ -141,10 +141,11 @@ def blatt_uebersicht(book):
     s["A13"].font = F_H2
     header(s, 14, ["Erkenntnis", "Was das heisst", "", "", ""])
     points = [
-        ("Ein Vereinsvertrag = 10× mehr Umsatz als ein Einzelcoach",
-         "Ein Verein mit 10 Coaches zahlt CHF 4'900 pro Jahr statt zehnmal CHF 399. Pro Abschluss "
-         "entsteht mehr Umsatz — bei weniger Aufwand für Akquise und Betreuung. Das Vereinspaket "
-         "beinhaltet Club-Dashboard und Vereinsprofil, darum ist der Preis pro Coach höher (Blatt 2)."),
+        ("Win-Win-Win: alle drei Seiten gewinnen",
+         "Der Verein zahlt für Sichtbarkeit und erhält dafür alle Buchungseinnahmen — er hat einen "
+         "direkten Anreiz, seine Coaches zu platzieren. Der Coach spart die CHF 399 Einzelanmeldung und "
+         "gibt bei Privatbuchungen nur einen Anteil ab. Coach Grid verdient stabil an der Jahreslizenz, "
+         "ohne Provision auf jede Buchung (Blatt 6)."),
         ("Fokus auf grosse Vereine: 20 reichen für CHF 180'000",
          "20 Vereine im M-Paket (10 Coaches, CHF 4'900/Jahr) ergeben CHF 98'000. Mit Clubs im L-Paket "
          "sind CHF 180'000 allein im Jahr 1 erreichbar — bei einem Bruchteil des Akquiseaufwands "
@@ -171,8 +172,8 @@ def blatt_uebersicht(book):
 # ------------------------------------------------------------------ Blatt 2
 def blatt_preise(book):
     s = setup(book, "2 Preise", "Preise",
-              "Einzelcoach CHF 399 / Jahr. Vereine zahlen pro Coach einen Aufschlag — "
-              "dafür erhalten sie Club-Dashboard, zentrale Abrechnung und Vereinsprofil.",
+              "Einzelcoach CHF 399 / Jahr. Vereine zahlen für Sichtbarkeit auf thecoachgrid.com — "
+              "Buchungseinnahmen gehen an den Verein, nicht an Coach Grid.",
               (26, 20, 20, 20, 20, 26))
 
     cell(s, 4, 1, "Einzelcoach — Preis pro Jahr (heute)", font=F_BOLD)
@@ -239,11 +240,11 @@ def blatt_preise(book):
     s.add_chart(chart, "A26")
 
     fazit(s, 25, 6,
-          "Der Einstieg liegt bei CHF 1'647/Jahr (3 Coaches, Stufe S) — das sind CHF 137/Monat und "
-          "weniger als 1 % eines typischen Golfclub-Budgets. Für Coach Grid bedeutet jeder Vereinsvertrag "
-          "mehr Umsatz pro Abschluss als zehn Einzelanmeldungen. Zusätzliches Modell im Aufbau: "
-          "Coaches geben einen kleinen Anteil ihrer Buchungseinnahmen ab — der Verein verdient mit und "
-          "hat damit einen eigenen Anreiz, seine Coaches aktiv zu platzieren.")
+          "Der Einstieg liegt bei CHF 1'647/Jahr (3 Coaches, Stufe S) — CHF 137/Monat und weniger als "
+          "1 % eines typischen Golfclub-Budgets. Coach Grid verdient die Jahreslizenz. Buchungseinnahmen "
+          "gehen an den Verein — er profitiert direkt davon, seine Coaches sichtbar zu machen. Coaches "
+          "sparen die Einzelanmeldung (CHF 399) und geben bei Privatbuchungen nur einen kleinen Anteil ab. "
+          "Win-Win-Win: Verein, Coach und Coach Grid haben alle einen echten Anreiz.")
     return s
 
 
@@ -483,67 +484,91 @@ def blatt_risiken(book):
 
 # ------------------------------------------------------------------ Blatt 6
 def blatt_konflikt(book):
-    s = setup(book, "6 Coach oder Verein", "Coach oder Verein",
-              "Coach Grid bleibt eine Coach-Plattform und bietet Vereinen trotzdem echten Mehrwert — kein Widerspruch.",
+    s = setup(book, "6 Geldfluss", "Win-Win-Win",
+              "Verein, Coach und Coach Grid haben alle einen echten Anreiz — das Modell funktioniert für alle drei.",
               (26, 34, 34, 26))
 
-    s["A4"] = "Drei Möglichkeiten"
+    s["A4"] = "Geldfluss: Wer zahlt was an wen"
     s["A4"].font = F_H2
-    header(s, 5, ["Modell", "Dafür", "Dagegen", "Bewertung"])
-    options = [
-        ("Anfrage geht an den Verein",
-         "Für den Verein die einfachste Zusage: er behält die Kundenbeziehung ganz.",
-         "Aus der Coach-Plattform wird ein Vereinsverzeichnis. Der Kunde schreibt einen Coach an und "
-         "landet bei einer Zentrale.",
-         "Nicht empfohlen"),
-        ("Anfrage geht nur an den Coach",
-         "Alles bleibt wie heute, kein Eingriff ins Produkt.",
-         "Der Verein sieht keinen Rücklauf und verlängert nach einem Jahr nicht.",
-         "Zu wenig für den Verein"),
-        ("Anfrage geht an den Coach, Verein erhält eine Kopie",
-         "Der Coach bleibt Ansprechpartner. Der Verein sieht im Dashboard jede Anfrage und die Auslastung "
-         "seiner Coaches.",
-         "Braucht ein Vereinskonto und ein Dashboard.",
-         "Empfohlen"),
+    header(s, 5, ["Von", "An", "Betrag / Leistung", "Warum"])
+    flows = [
+        ("Verein", "Coach Grid",
+         "Jahreslizenz: CHF 1'647 bis ~CHF 15'000 (je nach Teamgrösse)",
+         "Zahlt für Sichtbarkeit auf thecoachgrid.com. Ähnlich wie Werbung — Coaches erscheinen auf "
+         "der Plattform, der Verein erhält alle Buchungseinnahmen."),
+        ("Kunde", "Verein",
+         "Buchungsbetrag für die Coaching-Einheit",
+         "Buchungen laufen über den Verein. Der Coach liefert die Leistung, das Geld geht an den Verein. "
+         "Verein behält die Kundenbeziehung vollständig."),
+        ("Coach", "Verein",
+         "% der Privatbuchungen (z. B. 10–20 %)",
+         "Coach nimmt Privatkunden neben dem Vereinsangebot an. Er gibt einen Teil ab, spart aber die "
+         "CHF 399 Einzelanmeldung — der Nettoeffekt bleibt positiv."),
     ]
-    for offset, row in enumerate(options):
+    for offset, (frm, to, amount, why) in enumerate(flows):
         line = 6 + offset
-        for column, value in enumerate(row, start=1):
-            fill = None
-            if column == 4:
-                fill = {"Empfohlen": FILL_GOOD, "Nicht empfohlen": FILL_BAD}.get(value, FILL_WARN)
-            cell(s, line, column, value, align=WRAP,
-                 font=F_BOLD if column in (1, 4) else F_BODY, height=62)
+        cell(s, line, 1, frm, font=F_BOLD, align=CENTER)
+        cell(s, line, 2, to, font=F_BOLD, align=CENTER)
+        cell(s, line, 3, amount, font=F_BOLD, align=WRAP)
+        cell(s, line, 4, why, align=WRAP, height=70)
 
-    s["A10"] = "Vier Fragen, die im Gespräch kommen"
+    s["A10"] = "Was jede Partei gewinnt"
     s["A10"].font = F_H2
-    header(s, 11, ["Frage des Vereins", "Antwort", "Im Vertrag geregelt durch", ""])
+    header(s, 11, ["Partei", "Gibt", "Bekommt", "Anreiz"])
+    parties = [
+        ("Coach Grid  ✓ WIN",
+         "Plattform und Sichtbarkeit für Coaches",
+         "Jahreslizenz vom Verein",
+         "Stabiler Umsatz pro Club-Vertrag. Ein Vereinsvertrag = 10× mehr als ein Einzelcoach."),
+        ("Verein  ✓ WIN",
+         "Jahreslizenz an Coach Grid",
+         "Sichtbarkeit + alle Buchungseinnahmen + % aus Privatbuchungen der Coaches",
+         "Je mehr Buchungen, desto schneller amortisiert sich die Lizenz. Direkter Anreiz, "
+         "Coaches aktiv zu platzieren."),
+        ("Coach  ✓ WIN",
+         "% der Privateinnahmen an Verein",
+         "Sichtbarkeit ohne CHF 399 Einzelabo; Buchungen über Verein abgedeckt",
+         "Spart Registrierungskosten. Kann trotzdem privat buchen — der Anteil ist kleiner als "
+         "CHF 399/Jahr."),
+    ]
+    for offset, (party, gives, gets, incentive) in enumerate(parties):
+        line = 12 + offset
+        fill = FILL_GOOD
+        cell(s, line, 1, party, font=F_BOLD, align=WRAP, fill=fill)
+        cell(s, line, 2, gives, align=WRAP)
+        cell(s, line, 3, gets, align=WRAP)
+        cell(s, line, 4, incentive, align=WRAP, height=66)
+
+    s["A16"] = "Fragen, die im Gespräch kommen"
+    s["A16"].font = F_H2
+    header(s, 17, ["Frage", "Antwort", "Im Vertrag geregelt durch", ""])
     objections = [
-        ("Melden sich unsere Coaches dann einfach privat an?",
-         "Solange der Verein zahlt, läuft jeder seiner Coaches über den Vereinszugang.",
-         "Zugangscode pro Coach; ein zweites Profil nur mit Freigabe des Vereins."),
-        ("Sind Privatstunden nicht billiger als unsere Kurse?",
-         "In Tennis, Schwimmen und Ski liegt die Privatstunde regelmässig über dem Vereinsangebot.",
-         "Preisuntergrenze: Privatstunden eines Vereinscoaches mindestens auf Vereinsniveau."),
-        ("Was passiert, wenn ein Coach uns verlässt?",
-         "Sein Zugang wird deaktiviert. Der Verein zahlt nie für jemanden, der nicht mehr da ist.",
-         "Deaktivierung innert fünf Werktagen, monatliche Abrechnung der Zugänge."),
-        ("Könnt ihr uns neue Mitglieder garantieren?",
-         "Wir erhöhen die Wahrscheinlichkeit, gefunden zu werden, messbar und nachvollziehbar — "
-         "mit monatlichem Reporting ab Tag 1.",
-         "Klare Erfolgskriterien vorab schriftlich, monatliches Dashboard, Ausstiegsrecht nach 12 Monaten."),
+        ("Warum zahlt der Verein, wenn die Buchungseinnahmen ihm gehören?",
+         "Er zahlt für die Plattform — wie Werbung. Buchungseinnahmen kommen on top. "
+         "Bereits 10 Buchungen/Monat können die Jahreslizenz amortisieren.",
+         "Klare Preisliste; Beispielrechnung Buchungseinnahmen vs. Lizenzkosten."),
+        ("Wie hoch ist der Anteil des Coaches bei Privatbuchungen?",
+         "Zu verhandeln — 10–20 % ist ein realistischer Einstieg. Verein und Coach regeln das bilateral.",
+         "Rahmenvertrag mit Coach Grid legt maximalen % fest."),
+        ("Was passiert, wenn ein Coach den Verein verlässt?",
+         "Zugang wird deaktiviert. Der Verein zahlt nie für jemanden, der nicht mehr da ist.",
+         "Deaktivierung innert fünf Werktagen, monatliche Abrechnung."),
+        ("Kann ein Coach gleichzeitig privat und über den Verein angemeldet sein?",
+         "Nein — ein Coach, ein Profil. Über den Verein ist er günstiger als mit Einzelabo.",
+         "Ein Coach = ein Profil. Kein Doppel-Listing."),
     ]
     for offset, (question, answer, clause) in enumerate(objections):
-        line = 12 + offset
+        line = 18 + offset
         cell(s, line, 1, question, font=F_BOLD, align=WRAP)
         cell(s, line, 2, answer, align=WRAP)
-        cell(s, line, 3, clause, align=WRAP, height=54)
+        cell(s, line, 3, clause, align=WRAP, height=56)
         s.merge_cells(start_row=line, start_column=3, end_row=line, end_column=4)
 
-    fazit(s, 17, 4,
-          "Die Anfrage geht an den Coach, der Verein bekommt sie in Kopie und sieht im Dashboard, was das "
-          "Abo bringt. Damit bleibt die Plattform eine Coach-Plattform und der Verein hat trotzdem einen "
-          "belegbaren Gegenwert. Die Website muss dafür nicht umgeschrieben werden.")
+    fazit(s, 23, 4,
+          "Das Modell ist ein echtes Win-Win-Win: der Verein zahlt für Sichtbarkeit und erhält dafür alle "
+          "Buchungseinnahmen zurück — direkter Anreiz, Coaches zu platzieren. Der Coach spart CHF 399 "
+          "Einzelanmeldung und gibt bei Privatbuchungen nur einen kleinen Anteil ab. Coach Grid verdient "
+          "stabil an der Jahreslizenz, ohne Provision auf jede Buchung zu brauchen.")
     return s
 
 
